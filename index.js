@@ -50,7 +50,7 @@ app.post("/signin", logger, function(req, res) {
         return
     } else {
         const token = jwt.sign({
-            username
+            username: foundUser.username
         }, JWT_SECRET);
 
         res.json({
@@ -85,6 +85,12 @@ app.get("/me", auth, logger, function(req, res) {
             if (users[i].username === decodedData.username) {
                 foundUser = users[i]
             }
+        }
+
+        if (!foundUser) {
+            return res.status(404).json({
+                message: "User not found"
+            });
         }
         
         res.json({

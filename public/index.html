@@ -15,14 +15,13 @@
             });
             alert("You are signed up");
         }
-    </script>
 
-    <script>
-        function Signin() {
+        async function Signin() {
+
             const username = document.getElementById("signin-username").value;
             const password = document.getElementById("signin-password").value;
 
-            axios.post("http://localhost:3000/signin", {
+            const response = await axios.post("http://localhost:3000/signin", {
                 username: username,
                 password: password
             });
@@ -31,6 +30,21 @@
 
             alert("signed in successfully");
         }
+
+        async function getUserInformation() {
+            const response = await axios.get("http://localhost:3000/me", {
+                headers: {
+                    token: localStorage.getItem("token")
+                }
+            })
+            document.getElementById("information").innerHTML = "Username: " + response.data.username + "Password: " + response.data.password
+        }
+        getUserInformation();
+
+        async function logout() {
+            localStorage.removeItem("token");
+        }
+
     </script>
 
     <body>
